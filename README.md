@@ -1,6 +1,7 @@
 # email_client
 
 A new Flutter project.
+use enogh_mail
 
 ## Getting Started
 
