@@ -19,7 +19,13 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Авторизация'),
+        backgroundColor: Colors.white,
+        title: Text('Авторизация',
+          style: const TextStyle(
+              color: Colors.black,
+              fontFamily: 'roboto',
+              fontStyle: FontStyle.normal
+          ),),
         centerTitle: true,
       ),
       body: Center(
@@ -33,7 +39,7 @@ class LoginPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.email,size: 120,color: Colors.blue.shade500,),
+                    Icon(Icons.email,size: 120,color: Colors.grey.shade300,),
                     TextFormField(
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
@@ -56,6 +62,9 @@ class LoginPage extends StatelessWidget {
                     ),
                     boxDivider,
                     TextFormField(
+                      obscureText: true,
+                      enableSuggestions: false,
+                      autocorrect: false,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         enabledBorder: OutlineInputBorder(
@@ -81,11 +90,10 @@ class LoginPage extends StatelessWidget {
                   height: 50,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.redAccent,
+                      primary: Colors.grey.shade300,
                     ),
 
                     onPressed: () {
-                      //todo переделать futureBuilder в обычную функцию
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
 
@@ -140,7 +148,7 @@ class LoginPage extends StatelessWidget {
 
                       }
                     },
-                    child: const Text('Авторизоваться',
+                    child: const Text('Войти',
                         style: TextStyle(color: Colors.black)),
                   ),)
 

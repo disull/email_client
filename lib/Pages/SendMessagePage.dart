@@ -18,7 +18,19 @@ class SendMessagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Отправить'),
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          }, icon: Icon(Icons.arrow_back, color: Colors.black,),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text('Отправить', style:
+          TextStyle(
+            color: Colors.black,
+            fontFamily: 'roboto',
+            fontStyle: FontStyle.normal,
+          ),),
       ),
       body: Scrollbar(
         child: SingleChildScrollView(
@@ -101,7 +113,7 @@ class SendMessagePage extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.redAccent,
+                          primary: Colors.grey.shade400,
                         ),
                         onPressed: () {
                           if(_formKey.currentState!.validate()){
@@ -115,7 +127,7 @@ class SendMessagePage extends StatelessWidget {
                                     builder: (BuildContext context) => AlertDialog(
                                       content: Row(
                                         children: const [
-                                          Icon(Icons.check_circle_outline, color: Colors.green, size: 20,),
+                                          Icon(Icons.check, color: Colors.green, size: 20,),
                                           Text('Сообщение отправлено')
                                         ],
                                       ),
@@ -135,7 +147,7 @@ class SendMessagePage extends StatelessWidget {
                                     builder: (BuildContext context) => AlertDialog(
                                       content: Row(
                                         children: const [
-                                          Icon(Icons.close, color: Colors.red, size: 20,),
+                                          Icon(Icons.close, color: Colors.black, size: 20,),
                                           Text('Сообщение не отправлено, проблема с подключением к клиенту')
                                         ],
                                       ),

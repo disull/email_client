@@ -3,8 +3,9 @@ import 'package:enough_mail/enough_mail.dart';
 
 class MailModel{
   static late MailClient mailClient;
+  static late List<MimeMessage> messages;
   String title;
-  String content;
+  String? content;
   String? personalName;
   String avatar;
   String date;
@@ -14,7 +15,8 @@ class MailModel{
         required this.content,
         required this.personalName,
         required this.avatar,
-        required this.date
+        required this.date,
+
       }){
     title = normalizeTitle(title);
   }

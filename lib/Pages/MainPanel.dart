@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 
 class MainPanel extends StatelessWidget {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   String nameBox = 'inbox';
   MainPanel({Key? key, required this.nameBox }) : super(key: key);
@@ -14,28 +15,26 @@ class MainPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     // key: _scaffoldKey,
+      key: _scaffoldKey,
       appBar: AppBar(
-        /*leading: IconButton(onPressed: () {
-          _scaffoldKey.currentState?.openDrawer();
-        }, icon: Icon(Icons.menu),),*/
-        title: const Text('Входящие'),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: CircleAvatar(
-              backgroundColor: Colors.red,
-              radius: 20,
-            ),
-          )
-        ],
+        backgroundColor: Colors.white,
+        leading: IconButton(onPressed: () {
+         _scaffoldKey.currentState?.openDrawer();
+        }, icon: Icon(Icons.menu, color: Colors.black,),),
+        title: /*(nameBox == 'inbox')? Text('Входящие'): (nameBox=='sendbox')? Text('Отправленные'):(nameBox == 'trashbox')? Text('Корзина'): Text('Спам'),*/
+        Text((nameBox == 'inbox')? ('Входящие'): (nameBox=='sendbox')? ('Отправленные'):(nameBox == 'trashbox')? ('Корзина'): ('Спам'),
+        style: const TextStyle(
+          color: Colors.black,
+          fontFamily: 'roboto',
+          fontStyle: FontStyle.normal
+        ),),
         centerTitle: true,
       ),
       body: SendMessengerList(box: nameBox),
 
       floatingActionButton: FloatingActionButton(
 
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.grey,
         child: const Icon(Icons.send_outlined),
         onPressed: (){
 
@@ -51,13 +50,14 @@ class MainPanel extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: <Widget> [
               const DrawerHeader(
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.grey,
                 ),
                 child: Text('MAILER'),
               ),
               ListTile(
-                title: const Text('Входящие'),
+                title: Text('Входящие'),
                 onTap: (){
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
                       MainPanel(nameBox: 'inbox')
@@ -70,6 +70,22 @@ class MainPanel extends StatelessWidget {
 
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
                   MainPanel(nameBox: 'sendbox')
+                  ), (route) => false);
+                },
+              ),
+              ListTile(
+                title: const Text('Спам'),
+                onTap: (){
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                      MainPanel(nameBox: 'spam')
+                  ), (route) => false);
+                },
+              ),
+              ListTile(
+                title: const Text('Корзина'),
+                onTap: (){
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                      MainPanel(nameBox: 'trashbox')
                   ), (route) => false);
                 },
               ),

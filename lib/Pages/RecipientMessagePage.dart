@@ -16,7 +16,13 @@ class RecipientMessagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Сообщение'),
+        backgroundColor: Colors.white,
+        title: const Text('Сообщение', style:
+          TextStyle(
+              color: Colors.black,
+              fontFamily: 'roboto',
+              fontStyle: FontStyle.normal,
+          ),),
         centerTitle: true,
       ),
       body: Padding(
@@ -54,7 +60,7 @@ class RecipientMessagePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Center(
-                  child: Text(mailModel.content)),
+                  child: Text(mailModel.content.toString())),
             ),
           ],
         ),

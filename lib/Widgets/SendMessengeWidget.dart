@@ -2,8 +2,10 @@ import 'package:email_client/Pages/RecipientMessagePage.dart';
 import 'package:email_client/functions/Connections.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:enough_mail/enough_mail.dart';
 import '../Data/MailData.dart';
 import '../Models/MailModel.dart';
+import 'dart:math' as math;
 
 late Future <List<MailModel>> items;
 
@@ -16,6 +18,8 @@ class  SendMessengerList extends StatefulWidget {
 }
 
 class _SendMessengerListState extends State<SendMessengerList> {
+
+
 
 
   @override
@@ -31,6 +35,7 @@ class _SendMessengerListState extends State<SendMessengerList> {
         builder: (BuildContext context, snapshot) {
           if(snapshot.hasData){
             List<MailModel> items = snapshot.data as List<MailModel>;
+            items = items.reversed.toList();
             return ListView.separated(
               itemCount: items.length,
               itemBuilder: (BuildContext context, int index) {
@@ -52,23 +57,41 @@ class _SendMessengerListState extends State<SendMessengerList> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  const CircleAvatar(
-                                    backgroundColor: Colors.red,
+                                  CircleAvatar(
+                                    backgroundColor: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0),
                                     radius: 20,
+                                    child: Text(items[index].avatar, style:
+                                    const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17,
+                                    ),),
                                   ),
                                   PopupMenuButton(
-                                      icon: Icon(Icons.menu),
+                                      icon: Icon(Icons.menu, color: Colors.grey,),
                                       itemBuilder: (context) {
                                         return [
                                           PopupMenuItem(
                                               child: TextButton(
-                                                onPressed: () {},
-                                                child: const Text('Удалить'),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    items.removeAt(index);
+                                                    MailModel.mailClient.deleteMessage(MailModel.messages[index]);
+                                                    Navigator.pop(context);
+                                                  });
+                                                },
+                                                child: const Text('Удалить', style: TextStyle(color: Colors.grey),),
                                               )),
                                           PopupMenuItem(
                                               child: TextButton(
-                                                onPressed: () {},
-                                                child: const Text('В спам'),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    items.removeAt(index);
+                                                    MailModel.mailClient.moveMessageToFlag(MailModel.messages[index], MailboxFlag.junk);
+                                                    Navigator.pop(context);
+                                                  });
+                                                },
+                                                child: const Text('В спам', style: TextStyle(color: Colors.grey)),
                                               ))
                                         ];
                                       })
@@ -84,23 +107,29 @@ class _SendMessengerListState extends State<SendMessengerList> {
                               children: [
                                 Container(width: double.infinity, height: 25,
                                     child: Text(items[index].personalName.toString(),
-                                      overflow: TextOverflow.ellipsis,)),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                                    )),
                                 Container(width: double.infinity, height: 30,
                                     child: Text(items[index].title,
-                                        overflow: TextOverflow.ellipsis)),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(color: Colors.black, fontSize: 18)
+                                    )),
                                 Container(width: double.infinity, height: 70,
-                                  child: Text(items[index].content,
-                                    overflow: TextOverflow.fade,), ),
+                                  child: Text(items[index].content.toString(),
+                                    overflow: TextOverflow.fade,
+                                      style: TextStyle(color: Colors.grey, fontSize: 14)
+                                  ), ),
                               ],
                             ),
                           ),
                           Expanded(
                             flex: 25,
                             child: Column(
-                              mainAxisAlignment:  MainAxisAlignment.spaceAround,
+                              mainAxisAlignment:  MainAxisAlignment.start,
                               children: [
-                                Text((TimeOfDay.hoursPerDay).toString()),
-                                IconButton(onPressed: (){}, icon: Icon(Icons.star_border, size: 30,))
+                                Text((items[index].date).toString(),
+                            style: TextStyle(color: Colors.grey, fontSize: 14)),
                               ],
                             ),
                           )

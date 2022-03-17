@@ -26,8 +26,8 @@ void printMessage(MimeMessage message) {
 
 void setMessages(MimeMessage message) async {
   mailData.add(MailModel(
-      title: message.decodeSubject().toString(),
-      content: message.decodeTextPlainPart().toString(),
+      title: ' ', //message.decodeSubject().toString(),
+      content: message.decodeTextPlainPart(),
       personalName: message.from!.first.personalName,
       avatar: '',
       date: message.decodeDate().toString()));
@@ -100,21 +100,34 @@ Future<List<MailModel>> getMails(String nameBox) async{
   else if (nameBox == 'sendbox'){
     inbox = _mailboxes.firstWhere((box) => box.isSent);
   }
+  else if(nameBox == 'trashbox'){
+    inbox = _mailboxes.firstWhere((box) => box.isTrash);
+  }
+  else if(nameBox == 'spam'){
+    inbox = _mailboxes.firstWhere((box) => box.isJunk);
+  }
   else{
     print('Ошибка');
   }
   print( 'name BOX ----> ${inbox.name}');
   await MailModel.mailClient.selectMailbox(inbox);
-  final messages = await MailModel.mailClient.fetchMessages();
+   MailModel.messages = await MailModel.mailClient.fetchMessages();
+
   List<MailModel> mails = [];
-  messages.forEach((message) {
+  MailModel.messages.forEach((message) {
+    String title = message.decodeSubject().toString();
+    String? personalName = message.from!.first.personalName;
+    String? date = '${message.decodeDate()!.day}/${message.decodeDate()!.month}/${message.decodeDate()!.year}';
+    String? content = message.decodeTextPlainPart();
+    content ??= message.decodeContentText();
     mails.add(
       MailModel(
-          title: message.decodeSubject().toString(),
-          content: message.decodeTextPlainPart().toString(),
-          personalName: message.from!.first.personalName,
-          avatar: '',
-          date: message.decodeDate().toString()));
+          title: title,
+          content: content,
+          personalName: personalName,
+          avatar: personalName![0],
+          date: date,
+      ));
   });
   return mails;
 }
