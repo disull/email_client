@@ -24,15 +24,6 @@ void printMessage(MimeMessage message) {
 
 
 
-void setMessages(MimeMessage message) async {
-  mailData.add(MailModel(
-      title: ' ', //message.decodeSubject().toString(),
-      content: message.decodeTextPlainPart(),
-      personalName: message.from!.first.personalName,
-      avatar: '',
-      date: message.decodeDate().toString()));
-}
-
 
 Future<bool> connect(String email,String password) async {
 
@@ -45,15 +36,15 @@ Future<bool> connect(String email,String password) async {
     MailModel.mailClient = MailClient(account, isLogEnabled: false);
     await MailModel.mailClient.connect();
     print('connected');
-    return  true;
+    return true;
 
 
-    final mailboxes =  await MailModel.mailClient.listMailboxesAsTree(createIntermediate: false);
-    print(mailboxes);
-    await MailModel.mailClient.selectInbox();
-    final messages = await MailModel.mailClient.fetchMessages();
-    messages.forEach(printMessage);
-    messages.forEach(setMessages);
+    // final mailboxes =  await MailModel.mailClient.listMailboxesAsTree(createIntermediate: false);
+    // print(mailboxes);
+    // await MailModel.mailClient.selectInbox();
+    // final messages = await MailModel.mailClient.fetchMessages();
+    // messages.forEach(printMessage);
+    // messages.forEach(setMessages);
 
 
    /* List<MailAddress> mailadress = [
@@ -148,6 +139,7 @@ Future<bool> send(String emailTo, String emailFrom, String text, String subject)
     await MailModel.mailClient.sendMessage(mimeMessage);
     return true;
   } on Exception catch (e) {
+    print(e);
     return false;
   }
 

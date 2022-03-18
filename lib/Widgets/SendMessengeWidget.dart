@@ -35,8 +35,9 @@ class _SendMessengerListState extends State<SendMessengerList> {
         builder: (BuildContext context, snapshot) {
           if(snapshot.hasData){
             List<MailModel> items = snapshot.data as List<MailModel>;
-            items = items.reversed.toList();
             return ListView.separated(
+              shrinkWrap: true,
+              reverse: true,
               itemCount: items.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
